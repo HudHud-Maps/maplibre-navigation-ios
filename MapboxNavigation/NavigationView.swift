@@ -104,6 +104,7 @@ open class NavigationView: UIView {
     
     lazy var overviewButton = FloatingButton.rounded(image: Images.overview)
     lazy var muteButton = FloatingButton.rounded(image: Images.volumeUp, selectedImage: Images.volumeOff)
+    lazy var currentSpeedView: CurrentSpeedView = .forAutoLayout(hidden: true)
     
     lazy var lanesView: LanesView = .forAutoLayout(hidden: true)
     lazy var nextBannerView: NextBannerView = .forAutoLayout(hidden: true)
@@ -114,7 +115,7 @@ open class NavigationView: UIView {
         return view
     }()
     
-    lazy var resumeButton: ResumeButton = .forAutoLayout()
+    lazy var resumeButton: ResumeButton = .forAutoLayout(hidden: true)
     
     lazy var wayNameView: WayNameView = {
         let view: WayNameView = .forAutoLayout(hidden: true)
@@ -182,11 +183,18 @@ open class NavigationView: UIView {
             self.instructionsBannerContentView,
             self.lanesView,
             self.bottomBannerContentView,
-            self.floatingStackView
+            self.floatingStackView,
+            self.currentSpeedView
         ]
 		
         NSLayoutConstraint.activate(self.bannerShowConstraints)
         NSLayoutConstraint.deactivate(self.bannerHideConstraints)
+        NSLayoutConstraint.activate([
+            self.currentSpeedView.widthAnchor.constraint(equalToConstant: 60),
+            self.currentSpeedView.widthAnchor.constraint(equalTo: self.currentSpeedView.heightAnchor),
+            self.currentSpeedView.leadingAnchor.constraint(equalTo: self.mapView.leadingAnchor, constant: 20),
+            self.currentSpeedView.bottomAnchor.constraint(equalTo: self.bottomBannerContentView.topAnchor, constant: -20)
+        ])
 		
         UIView.animate(withDuration: animated ? CATransaction.animationDuration() : 0) {
             views.forEach { $0.alpha = 1 }
@@ -202,7 +210,8 @@ open class NavigationView: UIView {
             self.lanesView,
             self.bottomBannerContentView,
             self.floatingStackView,
-            self.resumeButton
+            self.resumeButton,
+            self.currentSpeedView
         ]
 		
         NSLayoutConstraint.deactivate(self.bannerShowConstraints)
@@ -264,7 +273,8 @@ private extension NavigationView {
             self.resumeButton,
             self.wayNameView,
             self.bottomBannerContentView,
-            self.instructionsBannerContentView
+            self.instructionsBannerContentView,
+            self.currentSpeedView
         ]
         
         subviews.forEach(addSubview(_:))

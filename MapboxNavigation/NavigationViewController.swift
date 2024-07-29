@@ -645,6 +645,12 @@ extension NavigationViewController: RouteControllerDelegate {
         } else if let rawlocation = locations.last {
             self.mapViewController.labelCurrentRoad(at: rawlocation)
         }
+		
+        if let kmh = locations.last?.speed {
+            self.mapViewController.navigationView.currentSpeedView.speed = Int(kmh * 3.6)
+        } else {
+            self.mapViewController.navigationView.currentSpeedView.speed = nil
+        }
     }
     
     public func routeController(_ routeController: RouteController, didArriveAt waypoint: Waypoint) -> Bool {
