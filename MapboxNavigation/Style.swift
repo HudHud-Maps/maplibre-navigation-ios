@@ -91,7 +91,33 @@ open class Button: StylableButton {}
 
 /// :nodoc:
 @objc(MBCancelButton)
-open class CancelButton: Button {}
+open class CancelButton: Button {
+    @objc open dynamic var text: String? {
+        didSet {
+            setTitle(self.text, for: .normal)
+        }
+    }
+	
+    @objc open dynamic var icon: UIImage? {
+        didSet {
+            setImage(self.icon, for: .normal)
+        }
+    }
+	
+    @objc open dynamic var overrideIntrinsicContentSize: CGSize = .zero {
+        didSet {
+            self.invalidateIntrinsicContentSize()
+        }
+    }
+	
+    override open var intrinsicContentSize: CGSize {
+        if self.overrideIntrinsicContentSize.width > 0, self.overrideIntrinsicContentSize.height > 0 {
+            self.overrideIntrinsicContentSize
+        } else {
+            super.intrinsicContentSize
+        }
+    }
+}
 
 /// :nodoc:
 @objc(MBDismissButton)

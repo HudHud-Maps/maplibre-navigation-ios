@@ -46,10 +46,10 @@ extension BottomBannerView {
     private func setupVerticalCompactLayout(_ c: inout [NSLayoutConstraint]) {
         c.append(heightAnchor.constraint(equalToConstant: 50))
         
-        c.append(cancelButton.widthAnchor.constraint(equalTo: heightAnchor))
-        c.append(cancelButton.topAnchor.constraint(equalTo: topAnchor))
-        c.append(cancelButton.trailingAnchor.constraint(equalTo: trailingAnchor))
-        c.append(cancelButton.bottomAnchor.constraint(equalTo: bottomAnchor))
+        c.append(cancelButton.topAnchor.constraint(greaterThanOrEqualTo: topAnchor))
+        c.append(cancelButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10))
+        c.append(cancelButton.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor))
+        c.append(cancelButton.centerYAnchor.constraint(equalTo: centerYAnchor))
         
         c.append(timeRemainingLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10))
         c.append(timeRemainingLabel.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor))
@@ -79,11 +79,11 @@ extension BottomBannerView {
         
         c.append(distanceRemainingLabel.leadingAnchor.constraint(equalTo: timeRemainingLabel.leadingAnchor))
         c.append(distanceRemainingLabel.topAnchor.constraint(equalTo: timeRemainingLabel.bottomAnchor, constant: 0))
-        
-        c.append(cancelButton.widthAnchor.constraint(equalToConstant: 80))
-        c.append(cancelButton.topAnchor.constraint(equalTo: topAnchor))
-        c.append(cancelButton.trailingAnchor.constraint(equalTo: trailingAnchor))
-        c.append(cancelButton.bottomAnchor.constraint(equalTo: bottomAnchor))
+		
+        c.append(cancelButton.topAnchor.constraint(greaterThanOrEqualTo: topAnchor))
+        c.append(cancelButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10))
+        c.append(cancelButton.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor))
+        c.append(cancelButton.centerYAnchor.constraint(equalTo: centerYAnchor))
         
         c.append(verticalDividerView.widthAnchor.constraint(equalToConstant: 1))
         c.append(verticalDividerView.heightAnchor.constraint(equalToConstant: 40))
