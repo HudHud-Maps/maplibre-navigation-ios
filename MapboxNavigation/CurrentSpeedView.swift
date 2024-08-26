@@ -65,7 +65,14 @@ private extension CurrentSpeedView {
         paragraph.paragraphSpacing = -4
 		
         let attributedString = NSMutableAttributedString()
-        attributedString.append(NSAttributedString(string: String(format: "%li", speed), attributes: [
+		
+        let text = if speed > 0 {
+            String(format: "%li", speed)
+        } else {
+            "-"
+        }
+		
+        attributedString.append(NSAttributedString(string: text, attributes: [
             .font: UIFont.systemFont(ofSize: 24, weight: .semibold),
             .paragraphStyle: paragraph
         ]))
