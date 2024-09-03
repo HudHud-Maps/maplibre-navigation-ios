@@ -178,6 +178,7 @@ open class NavigationView: UIView {
         self.wayNameView.text = "Street Label"
     }
 	
+    var showing = false
     func showUI(animated: Bool = true) {
         let views: [UIView] = [
             self.instructionsBannerContentView,
@@ -196,11 +197,13 @@ open class NavigationView: UIView {
             self.currentSpeedView.bottomAnchor.constraint(equalTo: self.bottomBannerContentView.topAnchor, constant: -20)
         ])
 		
+        self.showing = true
         UIView.animate(withDuration: animated ? CATransaction.animationDuration() : 0) {
             views.forEach { $0.alpha = 1 }
         } completion: { _ in
             views.forEach { $0.isHidden = false }
             self.bottomBannerView.traitCollectionDidChange(self.traitCollection)
+            self.showing = false
         }
     }
 	
