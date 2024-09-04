@@ -1,7 +1,7 @@
 import MapboxDirections
 import MapLibre
-import UIKit
 import OSLog
+import UIKit
 
 let myLogger = OSLog(subsystem: "MapLibreNavigation", category: .pointsOfInterest)
 
@@ -182,7 +182,6 @@ open class NavigationView: UIView {
     }
 	
     func showUI(animated: Bool = true) {
-        os_signpost(.begin, log: myLogger, name: "showUI")
         let views: [UIView] = [
             self.instructionsBannerContentView,
             self.bottomBannerContentView,
@@ -198,15 +197,12 @@ open class NavigationView: UIView {
             self.currentSpeedView.leadingAnchor.constraint(equalTo: self.mapView.leadingAnchor, constant: 20),
             self.currentSpeedView.bottomAnchor.constraint(equalTo: self.bottomBannerContentView.topAnchor, constant: -20)
         ])
-        os_signpost(.event, log: myLogger, name: "finish constraints")
 		
-        lanesView.show()
         UIView.animate(withDuration: animated ? CATransaction.animationDuration() : 0) {
             views.forEach { $0.alpha = 1 }
         } completion: { _ in
             views.forEach { $0.isHidden = false }
             self.bottomBannerView.traitCollectionDidChange(self.traitCollection)
-            os_signpost(.end, log: myLogger, name: "showUI")
         }
     }
 	
@@ -222,7 +218,6 @@ open class NavigationView: UIView {
         NSLayoutConstraint.deactivate(self.bannerShowConstraints)
         NSLayoutConstraint.activate(self.bannerHideConstraints)
 		
-        lanesView.hide()
         UIView.animate(withDuration: animated ? CATransaction.animationDuration() : 0) {
             views.forEach { $0.alpha = 0 }
         } completion: { _ in
