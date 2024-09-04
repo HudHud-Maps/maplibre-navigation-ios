@@ -103,7 +103,7 @@ open class LanesView: UIView {
     }
     
     public func hide() {
-        let isShowing = if let parent = superview as? NavigationView {
+        let isShowing = if let parent = superview?.superview as? NavigationView {
             parent.showing
         } else {
             false
