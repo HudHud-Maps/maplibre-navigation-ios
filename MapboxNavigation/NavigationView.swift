@@ -1,6 +1,9 @@
 import MapboxDirections
 import MapLibre
 import UIKit
+import OSLog
+
+let myLogger = OSLog(subsystem: "MapLibreNavigation", category: .pointsOfInterest)
 
 protocol NavigationViewDelegate: NavigationMapViewDelegate, MLNMapViewDelegate, StatusViewDelegate, InstructionsBannerViewDelegate, NavigationMapViewCourseTrackingDelegate, VisualInstructionDelegate {
     func navigationView(_ view: NavigationView, didTapCancelButton: CancelButton)
@@ -178,11 +181,10 @@ open class NavigationView: UIView {
         self.wayNameView.text = "Street Label"
     }
 	
-    var showing = false
     func showUI(animated: Bool = true) {
+        os_signpost(.begin, log: myLogger, name: "showUI")
         let views: [UIView] = [
             self.instructionsBannerContentView,
-            self.lanesView,
             self.bottomBannerContentView,
             self.floatingStackView,
             self.currentSpeedView
@@ -196,21 +198,21 @@ open class NavigationView: UIView {
             self.currentSpeedView.leadingAnchor.constraint(equalTo: self.mapView.leadingAnchor, constant: 20),
             self.currentSpeedView.bottomAnchor.constraint(equalTo: self.bottomBannerContentView.topAnchor, constant: -20)
         ])
+        os_signpost(.event, log: myLogger, name: "finish constraints")
 		
-        self.showing = true
+        lanesView.show()
         UIView.animate(withDuration: animated ? CATransaction.animationDuration() : 0) {
             views.forEach { $0.alpha = 1 }
         } completion: { _ in
             views.forEach { $0.isHidden = false }
             self.bottomBannerView.traitCollectionDidChange(self.traitCollection)
-            self.showing = false
+            os_signpost(.end, log: myLogger, name: "showUI")
         }
     }
 	
     func hideUI(animated: Bool = true) {
         let views: [UIView] = [
             self.instructionsBannerContentView,
-            self.lanesView,
             self.bottomBannerContentView,
             self.floatingStackView,
             self.resumeButton,
@@ -220,6 +222,7 @@ open class NavigationView: UIView {
         NSLayoutConstraint.deactivate(self.bannerShowConstraints)
         NSLayoutConstraint.activate(self.bannerHideConstraints)
 		
+        lanesView.hide()
         UIView.animate(withDuration: animated ? CATransaction.animationDuration() : 0) {
             views.forEach { $0.alpha = 0 }
         } completion: { _ in

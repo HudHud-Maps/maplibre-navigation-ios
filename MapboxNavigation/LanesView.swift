@@ -103,12 +103,7 @@ open class LanesView: UIView {
     }
     
     public func hide() {
-        let isShowing = if let parent = superview?.superview as? NavigationView {
-            parent.showing
-        } else {
-            false
-        }
-        guard isHidden == false || isShowing else { return }
+        guard isHidden == false else { return }
         UIView.defaultAnimation(0.3, animations: {
             self.isHidden = true
         }, completion: nil)
