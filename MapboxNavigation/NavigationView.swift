@@ -1,9 +1,6 @@
 import MapboxDirections
 import MapLibre
-import OSLog
 import UIKit
-
-let myLogger = OSLog(subsystem: "MapLibreNavigation", category: .pointsOfInterest)
 
 protocol NavigationViewDelegate: NavigationMapViewDelegate, MLNMapViewDelegate, StatusViewDelegate, InstructionsBannerViewDelegate, NavigationMapViewCourseTrackingDelegate, VisualInstructionDelegate {
     func navigationView(_ view: NavigationView, didTapCancelButton: CancelButton)
