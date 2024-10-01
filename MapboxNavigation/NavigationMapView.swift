@@ -840,6 +840,18 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
             let lines: [MLNPolylineFeature] = mergedCongestionSegments.map { (congestionSegment: CongestionSegment) -> MLNPolylineFeature in
                 let polyline = MLNPolylineFeature(coordinates: congestionSegment.0, count: UInt(congestionSegment.0.count))
                 polyline.attributes[MBCongestionAttribute] = String(describing: congestionSegment.1)
+                polyline.attributes["lineColor"] = switch congestionSegment.1 {
+                    case .heavy:
+                        self.trafficHeavyColor
+                    case .low:
+                        self.trafficLowColor
+                    case .moderate:
+                        self.trafficModerateColor
+                    case .severe:
+                        self.trafficSevereColor
+                    case .unknown:
+                        self.routeLineColor
+                    }
                 polyline.attributes["isAlternateRoute"] = false
                 if let legIndex {
                     polyline.attributes[MBCurrentLegAttribute] = index == legIndex
@@ -940,8 +952,11 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
                                       stops: NSExpression(forConstantValue: MLNRouteLineWidthByZoomLevel))
         line.lineColor = NSExpression(
             forConditional: NSPredicate(format: "isAlternateRoute == true"),
-            trueExpression: NSExpression(forConstantValue: self.routeLineAlternativeColor),
-            falseExpression: NSExpression(forConstantValue: self.routeLineColor))
+            trueExpression: NSExpression(
+                forConstantValue: self.routeLineAlternativeColor
+            ),
+            falseExpression: NSExpression(forKeyPath: "lineColor")
+)
         
         line.lineOpacity = NSExpression(
             forConditional: NSPredicate(format: "isAlternateRoute == true"),
