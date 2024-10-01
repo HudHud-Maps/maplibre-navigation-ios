@@ -823,7 +823,9 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
         for (index, leg) in route.legs.enumerated() {
             // If there is no congestion, don't try and add it
             guard let legCongestion = leg.segmentCongestionLevels, legCongestion.count < coordinates.count else {
-                return [MLNPolylineFeature(coordinates: route.coordinates!, count: UInt(route.coordinates!.count))]
+                let polyline = MLNPolylineFeature(coordinates: route.coordinates!, count: UInt(route.coordinates!.count))
+                polyline.attributes["lineColor"] = self.routeLineColor
+                return [polyline]
             }
             
             // The last coord of the preceding step, is shared with the first coord of the next step, we don't need both.
